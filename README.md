@@ -1,5 +1,5 @@
 # Twitter-Clone
-Scrimba Challenge
+Scrimba Challenge + stretch goals
 
 + textarea
 + .forEach()
