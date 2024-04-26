@@ -1,8 +1,10 @@
-# Twitter-Clone
-Scrimba Challenge + stretch goals:
+## Twitter-Clone
+#Scrimba Challenge + stretch goals:
 + Save to local Storage
 + Add the ability to resply to tweets
-  
+
+
+#Topics
 + Short-circuting
 + textarea
 + .forEach()
