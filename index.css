@@ -50,16 +50,19 @@ header{
 
 textarea{
     border: none;
+    resize: none;
     padding: 10px;
     margin: 0 0 20px 0;
-    height: 60px;
-    width: 100%;
-    font-size: 20px;
+    height: 60px; 
     line-height: 30px;
-    resize: none;
 }
 
-button{
+.tweet-textarea{
+    width: 100%;
+    font-size: 20px;
+}
+
+.tweet-btn{
     background-color: #1DA1F2;
     border: none;
     color: white;
@@ -71,6 +74,14 @@ button{
     font-weight: 600;
 }
 
+.reply-btn:hover{
+    color: black
+}
+
+.delete-btn:hover{
+    color: black;
+}
+
 /* tweet */
 
 .tweet{
@@ -78,24 +89,28 @@ button{
     padding: 20px 0 0 0;
     width: 100%;
     margin: 15px 0;
+    
 }
 
 .tweet-inner{
     display: flex;
     align-items: flex-start;
     gap: 10px;
+    
 }
 
 .tweet-details{
     display: flex;
     font-size: 13px;
     justify-content: space-between;
-    width: 160px;
+    width: 160px;  
 }
 
-.tweet-detail{
+
+.tweet-detail {
     display: flex;
     gap: 4px;
+    
 }
 
 .tweet-reply{
@@ -103,6 +118,7 @@ button{
     padding: 20px 0 0 0px;
     margin: 10px 0 10px 40px;
     width: 80%;
+
 }
 
 .handle{
@@ -118,6 +134,23 @@ button{
     line-height: 20px;
 }
 
+.reply-input-area{
+    width: 80%;
+    margin: 10px 0 10px 40px;
+   
+    
+}
+.reply-textarea{
+    font-size: 14px;
+    border-top: 1px solid lightgray;
+    padding: 5px 5px;
+    margin: 5px;
+    width: 90%;
+  
+}
+
+
+
 /* images */
 
 .profile-pic{
@@ -130,3 +163,4 @@ button{
 .hidden{
     display: none;
 }
+
