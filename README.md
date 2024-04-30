@@ -2,7 +2,7 @@
 # Scrimba Challenge + stretch goals:
 + Save to local Storage
 + Add the ability to reply to tweets
-+ Delete tweets and replies
++ Delete tweets 
 
 
 # Topics
