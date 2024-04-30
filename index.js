@@ -1,10 +1,12 @@
 import { tweetsData } from './data.js'
 import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+const tweetsFromLocalStorage = JSON.parse(localStorage.getItem("tweetsLocalStorage"))
+let tweetsToRender = tweetsFromLocalStorage || tweetsData 
 
 document.addEventListener('click', function(e){
     if(e.target.dataset.like){
        handleLikeClick(e.target.dataset.like) 
-    }
+    }  
     else if(e.target.dataset.retweet){
         handleRetweetClick(e.target.dataset.retweet)
     }
@@ -14,10 +16,17 @@ document.addEventListener('click', function(e){
     else if(e.target.id === 'tweet-btn'){
         handleTweetBtnClick()
     }
+    else if(e.target.dataset.replybutton){
+        handleReplyBtnClick(e.target.dataset.replybutton)
+    }
+    else if(e.target.dataset.deletetweetbutton){
+        handleDeleteBtnClick(e.target.dataset.deletetweetbutton)
+    } 
+ 
 })
  
 function handleLikeClick(tweetId){ 
-    const targetTweetObj = tweetsData.filter(function(tweet){
+    const targetTweetObj = tweetsToRender.filter(function(tweet){
         return tweet.uuid === tweetId
     })[0]
 
@@ -28,11 +37,13 @@ function handleLikeClick(tweetId){
         targetTweetObj.likes++ 
     }
     targetTweetObj.isLiked = !targetTweetObj.isLiked
+    localStorage.setItem("tweetsLocalStorage", JSON.stringify(tweetsToRender))
     render()
+    
 }
 
 function handleRetweetClick(tweetId){
-    const targetTweetObj = tweetsData.filter(function(tweet){
+    const targetTweetObj = tweetsToRender.filter(function(tweet){
         return tweet.uuid === tweetId
     })[0]
     
@@ -43,7 +54,9 @@ function handleRetweetClick(tweetId){
         targetTweetObj.retweets++
     }
     targetTweetObj.isRetweeted = !targetTweetObj.isRetweeted
+    localStorage.setItem("tweetsLocalStorage", JSON.stringify(tweetsToRender))
     render() 
+    
 }
 
 function handleReplyClick(replyId){
@@ -52,9 +65,11 @@ function handleReplyClick(replyId){
 
 function handleTweetBtnClick(){
     const tweetInput = document.getElementById('tweet-input')
+    
 
     if(tweetInput.value){
-        tweetsData.unshift({
+        tweetsToRender.unshift({
+        
             handle: `@Scrimba`,
             profilePic: `images/scrimbalogo.png`,
             likes: 0,
@@ -65,32 +80,70 @@ function handleTweetBtnClick(){
             isRetweeted: false,
             uuid: uuidv4()
         })
+    localStorage.setItem("tweetsLocalStorage", JSON.stringify(tweetsToRender))
+   
     render()
     tweetInput.value = ''
     }
 
 }
 
-function getFeedHtml(){
-    let feedHtml = ``
+function  handleReplyBtnClick(tweetId){
+    const replyInput = document.getElementById(`textarea-${tweetId}`)
+
+    if(replyInput.value){
+           
+        const targetTweetObj = tweetsToRender.filter(function(tweet){
+        return tweet.uuid === tweetId
+        })[0]
+           
+        targetTweetObj.replies.unshift({
+            handle: `@TrollBot66756542 💎`,
+            profilePic: `images/scrimbalogo.png`,
+            tweetText: replyInput.value,
+        })
+        
+      localStorage.setItem("tweetsLocalStorage", JSON.stringify(tweetsToRender))
+        render()
+        replyInput.value = ''
+    }
+   
+}
+
+
+function  handleDeleteBtnClick(tweetId){
+   tweetsToRender = tweetsToRender.filter(function(tweet){
+       return tweetId !== tweet.uuid
     
-    tweetsData.forEach(function(tweet){
+   })
+   localStorage.setItem("tweetsLocalStorage", JSON.stringify(tweetsToRender))
+    render()
+}   
+
+function getFeedHtml(){
+    
+    let feedHtml = ``
+        tweetsToRender.forEach(function(tweet){
         
         let likeIconClass = ''
-        
         if (tweet.isLiked){
             likeIconClass = 'liked'
         }
         
         let retweetIconClass = ''
-        
         if (tweet.isRetweeted){
             retweetIconClass = 'retweeted'
         }
         
-        let repliesHtml = ''
+        let enableDeleteTweetClass = ''
+        if (tweet.handle !== "@Scrimba"){
+            enableDeleteTweetClass ="hidden"    
+        }
         
+        
+        let repliesHtml = ''
         if(tweet.replies.length > 0){
+            
             tweet.replies.forEach(function(reply){
                 repliesHtml+=`
 <div class="tweet-reply">
@@ -133,10 +186,20 @@ function getFeedHtml(){
                     ></i>
                     ${tweet.retweets}
                 </span>
+                 <span class="tweet-detail ${enableDeleteTweetClass}">
+                    <i class="fa-solid fa-trash delete-btn" data-deletetweetbutton="${tweet.uuid}"></i>
+                </span>
+                 
             </div>   
         </div>            
     </div>
+    
     <div class="hidden" id="replies-${tweet.uuid}">
+         <div class="reply-input-area">
+            <textarea class="reply-textarea" id="textarea-${tweet.uuid}" placeholder="Write comment"></textarea>
+            <i class="fa-solid fa-reply reply-btn" data-replybutton="${tweet.uuid}"></i>
+        </div>
+        
         ${repliesHtml}
     </div>   
 </div>
