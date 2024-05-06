@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
 const tweetsFromLocalStorage = JSON.parse(localStorage.getItem("tweetsLocalStorage"))
 let tweetsToRender = tweetsFromLocalStorage || tweetsData 
 
-document.addEventListener('click', function(e){
+
+document.addEventListener('click', e => {
     if(e.target.dataset.like){
        handleLikeClick(e.target.dataset.like) 
     }  
@@ -24,11 +25,11 @@ document.addEventListener('click', function(e){
     } 
  
 })
+
+
  
 function handleLikeClick(tweetId){ 
-    const targetTweetObj = tweetsToRender.filter(function(tweet){
-        return tweet.uuid === tweetId
-    })[0]
+     const targetTweetObj = tweetsToRender.filter(tweet => tweet.uuid === tweetId)[0]
 
     if (targetTweetObj.isLiked){
         targetTweetObj.likes--
@@ -43,9 +44,7 @@ function handleLikeClick(tweetId){
 }
 
 function handleRetweetClick(tweetId){
-    const targetTweetObj = tweetsToRender.filter(function(tweet){
-        return tweet.uuid === tweetId
-    })[0]
+    const targetTweetObj = tweetsToRender.filter(tweet => tweet.uuid === tweetId)[0]
     
     if(targetTweetObj.isRetweeted){
         targetTweetObj.retweets--
@@ -93,9 +92,7 @@ function  handleReplyBtnClick(tweetId){
 
     if(replyInput.value){
            
-        const targetTweetObj = tweetsToRender.filter(function(tweet){
-        return tweet.uuid === tweetId
-        })[0]
+        const targetTweetObj = tweetsToRender.filter(tweet => tweet.uuid === tweetId)[0]
            
         targetTweetObj.replies.unshift({
             handle: `@TrollBot66756542 💎`,
@@ -112,10 +109,8 @@ function  handleReplyBtnClick(tweetId){
 
 
 function  handleDeleteBtnClick(tweetId){
-   tweetsToRender = tweetsToRender.filter(function(tweet){
-       return tweetId !== tweet.uuid
-    
-   })
+   tweetsToRender = tweetsToRender.filter(tweet => tweetId !== tweet.uuid)
+   
    localStorage.setItem("tweetsLocalStorage", JSON.stringify(tweetsToRender))
     render()
 }   
@@ -144,7 +139,7 @@ function getFeedHtml(){
         let repliesHtml = ''
         if(tweet.replies.length > 0){
             
-            tweet.replies.forEach(function(reply){
+            tweet.replies.forEach(reply => {
                 repliesHtml+=`
 <div class="tweet-reply">
     <div class="tweet-inner">
@@ -210,7 +205,7 @@ function getFeedHtml(){
 
 function render(){
     document.getElementById('feed').innerHTML = getFeedHtml()
+ 
 }
 
 render()
-
