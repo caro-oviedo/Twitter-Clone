@@ -6,6 +6,7 @@
 
 
 # Topics
++ Arrow functions
 + Progressive WebApps
 + Short-circuting
 + textarea
