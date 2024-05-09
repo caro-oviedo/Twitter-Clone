@@ -6,6 +6,7 @@
 
 
 # Topics
++Ternary operator
 + Arrow functions
 + Progressive WebApps
 + Short-circuting
